@@ -32,10 +32,10 @@ a{color:var(--sakura)}
 .pill input{width:70px;accent-color:var(--sakura)}
 
 /* 見出し */
-header.hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid var(--line)}
-header.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+header.hero{position:relative;min-height:min(46vh,440px);display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid var(--line)}
+header.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;opacity:.55}
 header.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,23,26,.1) 0%,rgba(25,23,26,.55) 55%,var(--ink) 100%)}
-.hero-text{position:relative;z-index:1;padding:0 16px 36px;max-width:720px;margin:0 auto;width:100%}
+.hero-text{position:relative;z-index:1;padding:0 16px 28px;max-width:720px;margin:0 auto;width:100%}
 .kicker{color:var(--sakura);font-size:13px;letter-spacing:.3em}
 h1{font-size:clamp(28px,7vw,46px);font-weight:800;letter-spacing:.16em;margin:6px 0 4px;line-height:1.3}
 html[lang="en"] h1{letter-spacing:.04em}
@@ -97,6 +97,18 @@ html[lang="en"] .axis-title{letter-spacing:.02em}
 ruby rt{font-size:.5em;color:var(--dim)}
 .lyr-play{margin:4px 0 24px}
 
+.listen{display:flex;align-items:center;gap:14px;margin-top:18px;background:rgba(25,23,26,.72);border:1px solid var(--sakura-dim);border-radius:4px;padding:10px 14px;max-width:460px}
+.listen button{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--sakura);background:none;color:var(--sakura);font-size:15px;cursor:pointer;display:grid;place-items:center}
+.listen button[aria-pressed="true"]{background:var(--sakura);color:var(--ink)}
+.listen .lt{font-size:14px;line-height:1.5}
+.listen .ls{font-size:12px;color:var(--dim)}
+.legend{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
+.legend h3{grid-column:1/-1;margin:0 0 2px;font-size:14px;font-weight:600;color:var(--dim);letter-spacing:.2em}
+.legend .cell{border:1px solid var(--line);border-radius:3px;padding:10px 12px;background:var(--ink2)}
+.legend .cell .s{color:var(--sakura);margin-right:6px}
+.legend .cell .t{font-size:14px;font-weight:600}
+.legend .cell .e{font-size:12px;color:var(--dim);margin-top:2px}
+@media (max-width:640px){.legend{grid-template-columns:repeat(2,1fr)}}
 footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;letter-spacing:.1em}
 @media (max-width:480px){section{padding:28px 0}.pill input{width:48px}.tabs button{padding:10px 16px}}
 </style>
@@ -123,6 +135,10 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
     <div class="kicker">君と啼く蝉　Crying Cicada for You</div>
     <h1 data-t="title"></h1>
     <div class="sub" data-t="sub"></div>
+    <div class="listen" id="listen" hidden>
+      <button type="button" id="listen-btn" aria-pressed="false" aria-label="BGM">▶</button>
+      <div><div class="lt" data-t="listenTitle"></div><div class="ls" data-t="listenSub"></div></div>
+    </div>
   </div>
 </header>
 
@@ -143,6 +159,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
         <div class="err" id="err" role="alert"></div>
       </div>
       <p class="note" data-t="note"></p>
+      <div class="legend" id="legend"></div>
     </section>
 
     <section id="result" hidden>
@@ -192,7 +209,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
       none:"どの軸にも、強く傾かなかった",
       copyHead:"【墨染咲楽の人間分類帖】", copyYou:function(n){return "君は「"+n+"」";},
       play:"♪ 再生", stop:"♪ 停止",
-      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　モチーフ曲",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　モチーフ曲", listenTitle:"モチーフ曲『君の為に啼く蝉』", listenSub:"流しながら読むのがおすすめ", legendHead:"この手帳が見る、六つの軸",
       footer:"君と啼く蝉 ― 哲学系文学美少女と過ごす七日間"
     },
     en:{
@@ -210,7 +227,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
       none:"You leaned strongly toward no axis at all",
       copyHead:"[Sakura Sumizome's Catalogue of People]", copyYou:function(n){return "You are \""+n+"\"";},
       play:"♪ Play", stop:"♪ Stop",
-      songTitle:"Crying Cicada for You", songSub:"君の為に啼く蝉　/　Theme song (original Japanese lyrics with translation)",
+      listenTitle:"Theme song: \"Crying Cicada for You\"", listenSub:"Best read with the music playing", legendHead:"The six axes this notebook reads", songTitle:"Crying Cicada for You", songSub:"君の為に啼く蝉　/　Theme song (original Japanese lyrics with translation)",
       footer:"Crying Cicada for You ― Seven Days with a Philosophical Literary Girl"
     },
     ko:{
@@ -228,7 +245,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
       none:"어느 축으로도 크게 기울지 않았다",
       copyHead:"【스미조메 사쿠라의 인간 분류첩】", copyYou:function(n){return "자네는 「"+n+"」";},
       play:"♪ 재생", stop:"♪ 정지",
-      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　테마곡 (일본어 원문과 번역)",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　테마곡 (일본어 원문과 번역)", listenTitle:"테마곡 『君の為に啼く蝉』", listenSub:"음악을 틀어 두고 읽기를 권한다네", legendHead:"이 수첩이 보는 여섯 개의 축",
       footer:"君と啼く蝉 ― 철학계 문학 미소녀와 보내는 이레"
     },
     zh:{
@@ -246,7 +263,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
       none:"没有向任何一轴明显倾斜",
       copyHead:"【墨染咲乐的人类分类帖】", copyYou:function(n){return "你是「"+n+"」";},
       play:"♪ 播放", stop:"♪ 停止",
-      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　主题曲（日语原词与翻译）",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　主题曲（日语原词与翻译）", listenTitle:"主题曲《君の為に啼く蝉》", listenSub:"建议一边播放一边阅读", legendHead:"这本手帐所看的六条轴",
       footer:"君と啼く蝉 ― 与哲学系文学美少女共度的七日"
     }
   };
@@ -478,6 +495,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
     try{ localStorage.setItem("cc-lang", l); }catch(e){}
     syncBgmLabels();
     renderLyrics();
+    renderLegend();
     if(lastVals) render(judge(lastVals), false);
     var err = $("err"); if(err.getAttribute("data-k")) err.textContent = u[err.getAttribute("data-k")];
   }
@@ -561,6 +579,18 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
     render(judge(p.vals), true);
   }
 
+  /* ---- 軸の一覧 ---- */
+  function renderLegend(){
+    var box = $("legend"), T = TXT[lang]; box.textContent = "";
+    box.appendChild(el("h3",null,UI[lang].legendHead));
+    AXES.forEach(function(a,i){
+      var c = el("div","cell"), t = el("div","t");
+      t.appendChild(el("span","s",a.sym)); t.appendChild(document.createTextNode(T.axes[i].title));
+      c.appendChild(t); c.appendChild(el("div","e",T.axes[i].minus + " ⇔ " + T.axes[i].plus));
+      box.appendChild(c);
+    });
+  }
+
   /* ---- 歌詞 ---- */
   function renderLyrics(){
     var box = $("lyrics-body"); box.innerHTML = "";
@@ -604,13 +634,14 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
     var t = au.paused ? UI[lang].play : UI[lang].stop;
     btn.textContent = t; lyrBtn.textContent = t;
     btn.setAttribute("aria-pressed", au.paused ? "false":"true");
+    var lb = $("listen-btn"); lb.textContent = au.paused ? "▶" : "❚❚"; lb.setAttribute("aria-pressed", au.paused ? "false":"true");
   }
   try{ var sv = localStorage.getItem("cc-vol"); if(sv !== null) vol.value = sv; }catch(e){}
   au.volume = vol.value/100;
-  au.addEventListener("loadedmetadata", function(){ ui.hidden = false; $("lyr-play").hidden = false; });
-  au.addEventListener("error", function(){ ui.hidden = true; $("lyr-play").hidden = true; });
+  au.addEventListener("loadedmetadata", function(){ ui.hidden = false; $("lyr-play").hidden = false; $("listen").hidden = false; });
+  au.addEventListener("error", function(){ ui.hidden = true; $("lyr-play").hidden = true; $("listen").hidden = true; });
   function toggle(){ if(au.paused){ au.play().catch(function(){}); } else { au.pause(); } }
-  btn.addEventListener("click", toggle); lyrBtn.addEventListener("click", toggle);
+  btn.addEventListener("click", toggle); lyrBtn.addEventListener("click", toggle); $("listen-btn").addEventListener("click", toggle);
   ["play","pause","ended"].forEach(function(ev){ au.addEventListener(ev, syncBgmLabels); });
   vol.addEventListener("input", function(){ au.volume = vol.value/100; try{ localStorage.setItem("cc-vol", vol.value); }catch(e){} });
 
