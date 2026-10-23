@@ -109,6 +109,15 @@ ruby rt{font-size:.5em;color:var(--dim)}
 .legend .cell .t{font-size:14px;font-weight:600}
 .legend .cell .e{font-size:12px;color:var(--dim);margin-top:2px}
 @media (max-width:640px){.legend{grid-template-columns:repeat(2,1fr)}}
+body{overflow-x:hidden}
+#panel-lyrics{position:relative}
+#panel-lyrics .lyrics{position:relative;z-index:1}
+.scatter{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);overflow:hidden;pointer-events:none;z-index:0}
+.scatter figure{position:absolute;margin:0;width:clamp(170px,24vw,360px);background:#efe9e1;padding:7px 7px 24px;border-radius:2px;
+  transform:rotate(var(--r));opacity:.16;box-shadow:0 10px 24px rgba(0,0,0,.6)}
+.scatter figure img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;filter:grayscale(.3) sepia(.25)}
+.scatter figure::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;transform:translateX(-50%) rotate(-4deg);background:rgba(212,166,174,.6)}
+@media (max-width:720px){.scatter figure{opacity:.12;width:62vw}}
 footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;letter-spacing:.1em}
 @media (max-width:480px){section{padding:28px 0}.pill input{width:48px}.tabs button{padding:10px 16px}}
 </style>
@@ -127,7 +136,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
     <input type="range" id="bgm-vol" min="0" max="100" value="60" aria-label="Volume">
   </div>
 </div>
-<audio id="bgm" src="bgm.mp3" preload="metadata"></audio>
+<audio id="bgm" src="bgm.mp3" preload="metadata" loop></audio>
 
 <header class="hero">
   <img src="SS/36.webp" alt="">
@@ -177,6 +186,16 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
   </div>
 
   <div id="panel-lyrics" role="tabpanel" aria-labelledby="tab-lyrics" hidden>
+    <div class="scatter" aria-hidden="true">
+      <figure style="top:2%;left:-3%;--r:-6deg"><img src="SS/31.webp" alt="" loading="lazy"></figure>
+      <figure style="top:9%;right:-2%;--r:5deg"><img src="SS/33.webp" alt="" loading="lazy"></figure>
+      <figure style="top:22%;left:4%;--r:4deg"><img src="SS/36.webp" alt="" loading="lazy"></figure>
+      <figure style="top:33%;right:3%;--r:-4deg"><img src="SS/37.webp" alt="" loading="lazy"></figure>
+      <figure style="top:46%;left:-2%;--r:-3deg"><img src="SS/35.webp" alt="" loading="lazy"></figure>
+      <figure style="top:58%;right:-3%;--r:6deg"><img src="SS/32.webp" alt="" loading="lazy"></figure>
+      <figure style="top:71%;left:3%;--r:5deg"><img src="SS/34.webp" alt="" loading="lazy"></figure>
+      <figure style="top:84%;right:2%;--r:-5deg"><img src="SS/30.webp" alt="" loading="lazy"></figure>
+    </div>
     <section class="lyrics">
       <h2 data-t="songTitle"></h2>
       <div class="lyr-sub" data-t="songSub"></div>
@@ -437,8 +456,7 @@ footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;let
      en:["Cry, cry, you cicada out of season","a song that ends in seven days is enough","holding on to what remains when I look back","that is what I'll call meaning","for the trail it leaves, the cicada cries"],
      ko:["울어라 울어라 철 지난 매미","이레면 끝나는 노래면 돼","돌아보았을 때 남은 것을 끌어안고","그걸 나는 의미라고 부르자","지나온 자취를 위해 매미는 운다"],
      zh:["啼鸣吧 啼鸣吧 不合时节的蝉","七天就结束的歌也好","回首之时 抱着留下的东西","我要将它 称之为意义","为了走过的轨迹 蝉在啼鸣"]},
-    {quiet:true,
-     ja:["最後の頁を書いている時","ふと思ったんだ。","この物語を読む時","ぼくはそこに居ないんだなって","それが少しだけ","ほんの少しだけ　惜しく思っただけなんだよ"],
+    {quiet:true, ja:["最後の頁を書いている時","ふと思ったんだ。","この物語を読む時","ぼくはそこに居ないんだなって","それが少しだけ","ほんの少しだけ　惜しく思っただけなんだよ"],
      en:["While I was writing the final page","it suddenly struck me.","When this story is read","I won't be there anymore","and just a little —","only a little — I thought it a shame, that's all"],
      ko:["마지막 페이지를 쓰고 있을 때","문득 생각했어.","이 이야기를 읽을 때","나는 거기 없겠구나 하고","그게 조금은","아주 조금은 아쉬웠을 뿐이야"],
      zh:["在写最后一页的时候","我忽然想到。","当这个故事被读起时","我已经不在那里了","只是有那么一点","只有那么一点点 觉得可惜罢了"]},
