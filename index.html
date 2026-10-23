@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>墨染咲楽の人間分類帖</title>
+<meta name="description" content="君と啼く蝉 ― 七日間の取材から、墨染咲楽が君という人間を分類する。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Noto+Serif+KR:wght@400;600;800&family=Noto+Serif+SC:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#19171a; --ink2:#221f23; --line:#3d373b; --paper:#e9e4de; --dim:#9b9195;
+  --sakura:#d4a6ae; --sakura-dim:#8e6a71; --warn:#e07a87;
+}
+*{box-sizing:border-box}
+html{background:var(--ink)}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:"Shippori Mincho",serif;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+html[lang="ko"] body{font-family:"Noto Serif KR","Shippori Mincho",serif;word-break:keep-all}
+html[lang="zh-CN"] body{font-family:"Noto Serif SC","Shippori Mincho",serif}
+html[lang="en"] body{letter-spacing:.01em}
+a{color:var(--sakura)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+[hidden]{display:none!important}
+
+/* 上部バー */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:10px 12px;pointer-events:none}
+.topbar > *{pointer-events:auto}
+.pill{display:flex;align-items:center;gap:8px;background:rgba(25,23,26,.82);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--dim)}
+.pill button{background:none;border:0;color:var(--dim);font:inherit;cursor:pointer;padding:0 2px;letter-spacing:.05em}
+.pill button[aria-pressed="true"]{color:var(--sakura)}
+.pill input{width:70px;accent-color:var(--sakura)}
+
+/* 見出し */
+header.hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid var(--line)}
+header.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+header.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,23,26,.1) 0%,rgba(25,23,26,.55) 55%,var(--ink) 100%)}
+.hero-text{position:relative;z-index:1;padding:0 16px 36px;max-width:720px;margin:0 auto;width:100%}
+.kicker{color:var(--sakura);font-size:13px;letter-spacing:.3em}
+h1{font-size:clamp(28px,7vw,46px);font-weight:800;letter-spacing:.16em;margin:6px 0 4px;line-height:1.3}
+html[lang="en"] h1{letter-spacing:.04em}
+.sub{color:var(--dim);font-size:13px;letter-spacing:.2em}
+html[lang="en"] .sub{letter-spacing:.05em}
+
+/* タブ */
+.tabs{display:flex;justify-content:center;gap:0;margin:28px 0 0;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--dim);font:inherit;font-size:15px;letter-spacing:.2em;padding:10px 22px;cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--sakura)}
+
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+.lead{font-size:15px}
+.lead p{margin:0 0 1em}
+.note{color:var(--dim);font-size:13px}
+
+.form{background:var(--ink2);border:1px solid var(--line);border-radius:4px;padding:18px;margin-top:22px}
+.form label{display:block;font-size:13px;color:var(--dim);margin-bottom:8px}
+.form textarea{width:100%;min-height:76px;background:var(--ink);color:var(--paper);border:1px solid var(--line);border-radius:3px;padding:10px;font:15px/1.6 ui-monospace,Consolas,monospace;resize:vertical}
+.form textarea:focus{outline:1px solid var(--sakura-dim)}
+.btn{display:inline-block;margin-top:12px;background:none;border:1px solid var(--sakura);color:var(--sakura);font:inherit;letter-spacing:.2em;padding:8px 22px;border-radius:2px;cursor:pointer}
+.btn:hover{background:rgba(212,166,174,.08)}
+.err{color:var(--warn);font-size:13px;margin-top:10px;min-height:1em}
+
+#result{scroll-margin-top:56px}
+.type{text-align:center;padding:10px 0 6px}
+.type .label{color:var(--dim);font-size:13px;letter-spacing:.3em}
+.type .name{font-size:clamp(24px,6.4vw,40px);font-weight:800;letter-spacing:.12em;margin:6px 0 2px;line-height:1.4}
+html[lang="en"] .type .name{letter-spacing:.02em}
+.type .name .front{color:var(--sakura)}
+.type .from{color:var(--dim);font-size:12px;letter-spacing:.1em}
+
+.axis{padding:26px 0;border-top:1px dashed var(--line)}
+.axis:first-of-type{border-top:0}
+.axis-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.axis-title{font-size:18px;font-weight:600;letter-spacing:.1em}
+html[lang="en"] .axis-title{letter-spacing:.02em}
+.axis-title .sym{color:var(--sakura);margin-right:8px;font-family:serif}
+.axis-level{font-size:13px;color:var(--sakura);letter-spacing:.15em}
+.gauge{margin:12px 0 4px}
+.gauge .ends{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--dim)}
+.gauge .bar{position:relative;height:2px;background:var(--line);margin:6px 0}
+.gauge .mid{position:absolute;left:50%;top:-4px;width:1px;height:10px;background:var(--dim)}
+.gauge .dot{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;background:var(--sakura);transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(212,166,174,.18);transition:left .6s ease}
+.axis p{margin:14px 0 0;font-size:15px}
+.axis .alias{color:var(--dim);font-size:12px;margin-top:6px}
+.after{text-align:center;color:var(--dim);font-size:13px}
+.after .copy{margin-top:10px}
+
+/* 歌詞 */
+.lyrics{text-align:center}
+.lyrics h2{font-size:22px;font-weight:600;letter-spacing:.2em;margin:0 0 4px}
+.lyrics .lyr-sub{color:var(--dim);font-size:12px;letter-spacing:.15em;margin-bottom:28px}
+.stanza{margin:0 0 30px}
+.stanza .ja{font-size:16px;line-height:2.1}
+.stanza .tr{color:var(--dim);font-size:13px;line-height:1.9;margin-top:8px}
+.stanza.quiet .ja{color:#cfc8c2;font-size:15px}
+.stanza.last .ja{color:var(--sakura)}
+ruby rt{font-size:.5em;color:var(--dim)}
+.lyr-play{margin:4px 0 24px}
+
+footer{padding:36px 0 60px;text-align:center;color:var(--dim);font-size:12px;letter-spacing:.1em}
+@media (max-width:480px){section{padding:28px 0}.pill input{width:48px}.tabs button{padding:10px 16px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="pill" role="group" aria-label="Language" id="langs">
+    <button type="button" data-lang="ja">日本語</button>
+    <button type="button" data-lang="en">EN</button>
+    <button type="button" data-lang="ko">한국어</button>
+    <button type="button" data-lang="zh">中文</button>
+  </div>
+  <div class="pill" id="bgm-ui" hidden>
+    <button type="button" id="bgm-btn" aria-pressed="false"></button>
+    <input type="range" id="bgm-vol" min="0" max="100" value="60" aria-label="Volume">
+  </div>
+</div>
+<audio id="bgm" src="bgm.mp3" preload="metadata"></audio>
+
+<header class="hero">
+  <img src="SS/36.webp" alt="">
+  <div class="hero-text">
+    <div class="kicker">君と啼く蝉　Crying Cicada for You</div>
+    <h1 data-t="title"></h1>
+    <div class="sub" data-t="sub"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" id="tab-book" aria-selected="true" aria-controls="panel-book" data-t="tabBook"></button>
+    <button type="button" role="tab" id="tab-lyrics" aria-selected="false" aria-controls="panel-lyrics" data-t="tabLyrics"></button>
+  </div>
+
+  <div id="panel-book" role="tabpanel" aria-labelledby="tab-book">
+    <section class="lead">
+      <p data-t="lead1"></p>
+      <p data-t="lead2"></p>
+      <div class="form">
+        <label for="code" data-t="label"></label>
+        <textarea id="code" spellcheck="false" placeholder="[α0 β0 γ0 δ0 ε0 ζ0]"></textarea>
+        <button class="btn" type="button" id="go" data-t="go"></button>
+        <div class="err" id="err" role="alert"></div>
+      </div>
+      <p class="note" data-t="note"></p>
+    </section>
+
+    <section id="result" hidden>
+      <div class="type">
+        <div class="label" data-t="youAre"></div>
+        <div class="name" id="type-name"></div>
+        <div class="from" id="type-from"></div>
+      </div>
+      <div id="axes"></div>
+      <div class="after">
+        <div data-t="sign"></div>
+        <button class="btn copy" type="button" id="copy" data-t="copy"></button>
+      </div>
+    </section>
+  </div>
+
+  <div id="panel-lyrics" role="tabpanel" aria-labelledby="tab-lyrics" hidden>
+    <section class="lyrics">
+      <h2 data-t="songTitle"></h2>
+      <div class="lyr-sub" data-t="songSub"></div>
+      <div class="lyr-play" id="lyr-play" hidden><button class="btn" type="button" id="lyr-btn"></button></div>
+      <div id="lyrics-body"></div>
+    </section>
+  </div>
+</main>
+
+<footer data-t="footer"></footer>
+
+<script>
+(function(){
+  /* ================================================================
+     文言(UI)
+     ================================================================ */
+  var UI = {
+    ja:{
+      htmlLang:"ja", title:"墨染咲楽の<br>人間分類帖", titleText:"墨染咲楽の人間分類帖",
+      sub:"遺作の最後の頁に挟まっていた、一冊の手帳",
+      tabBook:"分類帖", tabLyrics:"歌詞",
+      lead1:"七日間の取材のあと、君の手元に一冊の原稿が届いたはずだ。",
+      lead2:"その最後に記された記号の列を、ここに書き写してほしい。<br>彼女が君をどんな人間だと思っていたのか、この手帳が教えてくれる。",
+      label:"最後のステータスウィンドウの数値（例：[α2 β-1 γ0 δ3 ε-2 ζ1]）",
+      go:"頁を捲る", note:"ステータスウィンドウを丸ごと貼り付けても読み取れます。",
+      errNone:"記号の列が見つからない。αからζまでの数値を貼り付けてくれたまえ。",
+      errPart:"足りない記号は 0 として読んだよ。",
+      youAre:"君は", sign:"── 墨染咲楽の人間分類帖より", copy:"結果を写す", copied:"写した",
+      levels:{H:"高",M:"中",L:"低"}, sep:"　／　",
+      none:"どの軸にも、強く傾かなかった",
+      copyHead:"【墨染咲楽の人間分類帖】", copyYou:function(n){return "君は「"+n+"」";},
+      play:"♪ 再生", stop:"♪ 停止",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　モチーフ曲",
+      footer:"君と啼く蝉 ― 哲学系文学美少女と過ごす七日間"
+    },
+    en:{
+      htmlLang:"en", title:"Sakura Sumizome's<br>Catalogue of People", titleText:"Sakura Sumizome's Catalogue of People",
+      sub:"A small notebook, tucked behind the last page of her final work",
+      tabBook:"Catalogue", tabLyrics:"Lyrics",
+      lead1:"After seven days of interviews, a manuscript should have reached your hands.",
+      lead2:"Copy the string of symbols written at its very end here.<br>This notebook will tell you what sort of person she thought you were.",
+      label:"The numbers from the final status window (e.g. [α2 β-1 γ0 δ3 ε-2 ζ1])",
+      go:"Turn the page", note:"You can paste the whole status window; the symbols will be picked out.",
+      errNone:"I can't find the symbols. Paste the numbers from α to ζ, would you?",
+      errPart:"Any missing symbols were read as 0.",
+      youAre:"You are", sign:"── from Sakura Sumizome's Catalogue of People", copy:"Copy result", copied:"Copied",
+      levels:{H:"High",M:"Middle",L:"Low"}, sep:"  /  ",
+      none:"You leaned strongly toward no axis at all",
+      copyHead:"[Sakura Sumizome's Catalogue of People]", copyYou:function(n){return "You are \""+n+"\"";},
+      play:"♪ Play", stop:"♪ Stop",
+      songTitle:"Crying Cicada for You", songSub:"君の為に啼く蝉　/　Theme song (original Japanese lyrics with translation)",
+      footer:"Crying Cicada for You ― Seven Days with a Philosophical Literary Girl"
+    },
+    ko:{
+      htmlLang:"ko", title:"스미조메 사쿠라의<br>인간 분류첩", titleText:"스미조메 사쿠라의 인간 분류첩",
+      sub:"유작의 마지막 페이지에 끼워져 있던 한 권의 수첩",
+      tabBook:"분류첩", tabLyrics:"가사",
+      lead1:"이레 동안의 취재가 끝난 뒤, 자네 손에 원고 한 묶음이 도착했을 걸세.",
+      lead2:"그 마지막에 적힌 기호의 열을 여기에 옮겨 적어 주게.<br>그녀가 자네를 어떤 인간이라 여겼는지, 이 수첩이 알려 줄 걸세.",
+      label:"마지막 상태창의 수치 (예: [α2 β-1 γ0 δ3 ε-2 ζ1])",
+      go:"페이지를 넘긴다", note:"상태창을 통째로 붙여 넣어도 읽을 수 있습니다.",
+      errNone:"기호의 열이 보이지 않는군. α부터 ζ까지의 수치를 붙여 넣어 주게.",
+      errPart:"빠진 기호는 0으로 읽었다네.",
+      youAre:"자네는", sign:"── 스미조메 사쿠라의 인간 분류첩에서", copy:"결과 복사", copied:"복사했다네",
+      levels:{H:"높음",M:"보통",L:"낮음"}, sep:"　／　",
+      none:"어느 축으로도 크게 기울지 않았다",
+      copyHead:"【스미조메 사쿠라의 인간 분류첩】", copyYou:function(n){return "자네는 「"+n+"」";},
+      play:"♪ 재생", stop:"♪ 정지",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　테마곡 (일본어 원문과 번역)",
+      footer:"君と啼く蝉 ― 철학계 문학 미소녀와 보내는 이레"
+    },
+    zh:{
+      htmlLang:"zh-CN", title:"墨染咲乐的<br>人类分类帖", titleText:"墨染咲乐的人类分类帖",
+      sub:"夹在遗作最后一页里的一本手帐",
+      tabBook:"分类帖", tabLyrics:"歌词",
+      lead1:"七天的取材结束后，一份原稿应该已经送到了你的手中。",
+      lead2:"请把写在它最后的那串符号抄写到这里。<br>她觉得你是个怎样的人——这本手帐会告诉你。",
+      label:"最后的状态栏中的数值（例：[α2 β-1 γ0 δ3 ε-2 ζ1]）",
+      go:"翻开下一页", note:"直接粘贴整个状态栏也能读取。",
+      errNone:"找不到那串符号。请把α到ζ的数值粘贴进来吧。",
+      errPart:"缺少的符号按 0 读取了哦。",
+      youAre:"你是", sign:"── 摘自墨染咲乐的人类分类帖", copy:"复制结果", copied:"已复制",
+      levels:{H:"高",M:"中",L:"低"}, sep:"　／　",
+      none:"没有向任何一轴明显倾斜",
+      copyHead:"【墨染咲乐的人类分类帖】", copyYou:function(n){return "你是「"+n+"」";},
+      play:"♪ 播放", stop:"♪ 停止",
+      songTitle:"君の為に啼く蝉", songSub:"Crying Cicada for You　／　主题曲（日语原词与翻译）",
+      footer:"君と啼く蝉 ― 与哲学系文学美少女共度的七日"
+    }
+  };
+
+  /* ================================================================
+     軸(閾値は七日目のロアブックと同じ。maxP/maxM は各方向の最大の振れ幅)
+     ================================================================ */
+  var AXES = [
+    {sym:"α", hi:2, lo:-2, maxP:4, maxM:4},
+    {sym:"β", hi:2, lo:-2, maxP:3, maxM:3},
+    {sym:"γ", hi:1, lo:-1, maxP:2, maxM:2},
+    {sym:"δ", hi:3, lo:-2, maxP:5, maxM:4},
+    {sym:"ε", hi:1, lo:-2, maxP:2, maxM:3},
+    {sym:"ζ", hi:3, lo:-3, maxP:6, maxM:6}
+  ];
+
+  /* 各言語の軸の文章。H/L は front(型の名前の前半)・back(後半)・text、M は text のみ */
+  var TXT = {
+  ja:{
+    joinName:function(f,b){return [f,b];},
+    fallback:["墨染の","桜"], single:"読み手",
+    axes:[
+      {title:"命の場所", plus:"器", minus:"情報",
+       H:{front:"桜を見上げる", back:"花見客", text:"この手の人間は、命という物が見える部分に宿っていると考えている。瞳に映る世界が第一で、見えぬ世界は二の次だという事だね。故に、目の前の命一つを大切に扱い、一つ一つ手を離れる度に傷付いてしまう。同じように見える物で慰められない、不器用な人間なのだな、君は。"},
+       M:{text:"命が何に宿るのか決めかねている。或いは、態々決める必要を感じていないのだろう。心臓が止まれば死者であるし、誰からも忘れられたら死だとも言う。君は、きっとそういうヤツだ。だからこそ、きっと誰かが死ねば哀しみ、誰かを忘れる事に哀しむのだろうね。君は。"},
+       L:{front:"枯れた後に残る", back:"桜の花弁", text:"命は器に宿るのではなく、その中身に宿るのだと考える人種だな。或いは、経験や人格こそが命であると考えるかもしれない。身体が失われても、その温度や喋り方、声や顔が世界に刻まれている限り、君にとっての死は訪れない。まぁ、それはきっと優しい考えだとぼかぁ、思うね。"}},
+      {title:"逃避傾向", plus:"逃避", minus:"直視",
+       H:{front:"目隠しをした", back:"迷い子", text:"痛みを伴う現実よりも、心地よい嘘で出来た夢を君は選ぶんだろう。その在り方は、誰が否定しようとなんだかんだ、悪くない。ただ一つ気を付ける事があるとしたら、酒を程々にして、薬には手を出さない事だね。この手の人種にとっては、泥沼だ。……まぁ、だけどね。ぼかぁ、夢が好きなんだ。たまには一緒に酒でも飲みたかったな。"},
+       M:{text:"現実を見据えて生きて、必要な時にその目を逸らす。器用なのか、或いは傷付く事を恐れているのか。まぁ、それでも悪い事じゃない。元より、ファンタジーなんてのは一時の気晴らしなのさ。畢竟、ぼく達は歩み続けるしか無いんだ。目隠ししたままじゃ、足元掘われても気付けないのだよ。"},
+       L:{front:"傷を隠さない", back:"証人", text:"どれだけの痛みを伴おうとも、決して現実から目を逸らさない強い意志を持っている。夢を嫌い、逃避を唾棄する。君は、そういう人間なのだね。世界の風雨に晒されながらも、足元を踏み締め、遠い遠い先を見据える覚悟を持った、稀有な人間だ。立派なものさ。だがね、君。たまには休みたまえよ。"}},
+      {title:"命の天秤", plus:"数を取る", minus:"罪を取る",
+       H:{front:"天秤を掲げる", back:"執行人", text:"天秤を純粋な命の数で見るのだろう。或いは、正義が孕む矛盾を呑み込んだとも言えるのかね。単純に見えて、その実残酷な物さ。それでも、人を救える人間はいつだってそういう手合いだとぼかぁ思うね。こういう人間は冷たい訳じゃあない。ただ、重さを量る事から逃げないだけさ。"},
+       M:{text:"責任と利益の間で揺れている。風見鶏に見えて、その実、何より人間らしいとぼかぁ、思うね。天秤を前にして迷う事が出来るのは、皿の上に乗せた物が全てでは無い事を知っているからさ。極限の選択を突き付けられた時、君は迷うだろう。でも、それを恥じる必要は無い。それは何より、うつくしい事なのさ。"},
+       L:{front:"背を向ける", back:"祈り手", text:"命を比べるのが嫌なのか、或いは責任という物を背負うのが嫌なのだろうね。それが重ければ重い程猶更だ。だが、分かるよ。他人の人生を背負って歩ける程、人は強く出来ていないのさ。死も、生も。それは一人一人の物で、誰かに預ける物でなければ、預かる物でも無いのだよ。"}},
+      {title:"死への忌避", plus:"忌避", minus:"受容",
+       H:{front:"歩み続ける", back:"旅人", text:"死を正しく恐れる事が出来る。全く以て、素晴らしい事だ。終わりを恐れ、一秒でも永らえる事を望み、一人でも多く記憶して欲しいと願う。それは当たり前の事だとぼかぁ、思うね。正しい事さ。君、死をこれからも正しく恐れたまえよ。それこそが長生きの秘訣さ。"},
+       M:{text:"死を恐れはするが、やがて誰にも最期が来る事を知っている。何、誰もが持つ距離感だ。過剰に恐れず、死へと自ら歩む事もせず。実に良い事じゃないか。近しい人の死も、君なら乗り越えられるのかもしれないね。それは間違いなく、良い事さ。人は前に進む事しか出来ないのだよ、君。月並みだが、過去や死に縛られてはいけないというものさ。"},
+       L:{front:"最期を知る", back:"隠者", text:"終わりを受け入れている人間なのだな、君は。死を敵視せず、やがて迎える時は両の手を広げてみせるような人間だ。それは何よりうつくしい事だが、同時にひどく不安定にも見える。なあ、君。君はまだこっちには来るなよ。土産話も持たずに来られたら、退屈だ。"}},
+      {title:"不条理の幸福", plus:"見出せる", minus:"見出せない",
+       H:{front:"幸福を信じる", back:"積人", text:"例え世界が不条理であったとしても、その世界の中で笑っていられるのだろうね。人生が必ず報われるとは限らない事を知りつつ、それでも日々の波に揺られる中で満足していられる。生きる事その物が幸福であるのかもしれないな。きっと君なら、シーシュポスを幸福だと想像出来るのだろう。"},
+       M:{text:"世界の不条理を知りつつも、歩みを止める事はしない。随分と人間的だな。報われない日々を幸福であると信じる事は出来ないが、歩みを止めて希望を捨てる事も出来ない。まぁ、なんだ。ぼくはね、それで良いのだと思うよ。君の人生が報われる事をぼくは約束出来ないが、希望を持つ事は自由さ。"},
+       L:{front:"意味を求めた", back:"巡礼者", text:"意味の無い繰り返しに幸福を見出さない手合いだな。君はきっと、不条理を乗り越えた先に報いがあるか、或いは不条理にせめて理由を求めるのだろう。そして、完全に無意味だと判断した事からは簡単に手を引けるのが、君だと思うね。実にうつくしい在り方じゃないか。"}},
+      {title:"咲楽への関わり方", plus:"踏み込む", minus:"見守る",
+       H:{front:"土足で踏み込む", back:"お人好し", text:"人の世界に土足で上がり込む人間だ。拒絶を受けても放っておけない。自分の意志に忠実でお人好しの厄介者が君だ。君という人間は実に。全く以て……。まあ、それに救われる人間も、きっと居るのだろうな。"},
+       M:{text:"踏み込むべき時と引くべき時を知っている人間だ。人付き合いに長けているタイプだな。或いは、両極端なだけかもしれないが。"},
+       L:{front:"約束を守る", back:"お人好し", text:"相手の意志を尊重し、静かに隣に座っていられる人間だ。存外、珍しいタイプかもしれないな。だが、君の在り方に……少なくとも、ぼくは救われていたよ。"}}
+    ]},
+  en:{
+    joinName:function(f,b){return ["The "+f+" ",b];},
+    fallback:["The Ink-Dyed ","Sakura"], single:"Reader",
+    axes:[
+      {title:"Where Life Dwells", plus:"Vessel", minus:"Information",
+       H:{front:"Blossom-Gazing", back:"Flower-Viewer", text:"Your sort believes that life dwells in what can be seen. The world reflected in your eyes comes first; the unseen world, second. And so you cherish each life before you, and are wounded each time one slips from your hands. You can't be consoled by something that merely looks the same. What a clumsy creature you are."},
+       M:{text:"You haven't decided where life dwells. Or perhaps you simply feel no need to decide. When the heart stops, one is dead; and yet you'd also call it death to be forgotten by everyone. That's the sort of fellow you are, I'm sure. Which is exactly why, I imagine, you grieve when someone dies, and grieve again when you forget someone."},
+       L:{front:"Lingering", back:"Fallen Petal", text:"You're of the breed that thinks life dwells not in the vessel but in what it holds. Or perhaps you'd say experience and character are life itself. Even once the body is gone, so long as its warmth, its way of speaking, its voice and its face remain etched upon the world, death never comes for you. Well — I'd call that a gentle way of thinking, I suppose."}},
+      {title:"Escapism", plus:"Escape", minus:"Confront",
+       H:{front:"Blindfolded", back:"Lost Child", text:"You'd choose a pleasant dream woven of lies over a reality that comes with pain, I expect. And that way of being — whoever may deny it — isn't so bad, all things considered. If there's one thing to watch out for, it's to drink in moderation and never touch drugs. For your kind, that's a bog with no bottom. …Well, but you see, I'm fond of dreams. I'd have liked to share a drink with you now and then."},
+       M:{text:"You live with your eyes on reality and look away when you must. Whether that's dexterity or a fear of being hurt, I couldn't say. Still, it's no bad thing. Fantasy was only ever a passing diversion, after all. In the end, all we can do is keep walking. With a blindfold on, you'd never notice the ground being dug out from under your feet."},
+       L:{front:"Scar-Baring", back:"Witness", text:"However much pain it brings, you have the will never to look away from reality. You loathe dreams and spit upon escape. That's the kind of person you are, isn't it. Battered by the wind and rain of the world, you plant your feet and fix your gaze on a far, far horizon — a rare sort of resolve. Admirable, truly. But listen, you. Do take a rest once in a while."}},
+      {title:"The Scales of Life", plus:"Count the lives", minus:"Weigh the sin",
+       H:{front:"Scale-Bearing", back:"Executioner", text:"You weigh the scales by the pure count of lives, I suppose. Or one might say you've swallowed the contradiction that justice carries within it. It looks simple, but in truth it's a cruel thing. Even so, I think the people who can actually save others are always that sort. People like that aren't cold. They simply don't run from the weighing."},
+       M:{text:"You waver between responsibility and gain. You may look like a weathervane, but in truth I think nothing could be more human. To hesitate before the scales is to know that what sits on the pans isn't everything. Faced with an impossible choice, you'll hesitate. But there's no need to be ashamed of it. That, above all, is a beautiful thing."},
+       L:{front:"Turned-Away", back:"Supplicant", text:"Either you hate comparing lives, or you hate shouldering responsibility. All the more so the heavier it is. But I understand. People aren't built strong enough to walk on carrying someone else's life. Death and life alike — they belong to each person alone. They're not things to entrust to another, nor things to be entrusted with."}},
+      {title:"Aversion to Death", plus:"Aversion", minus:"Acceptance",
+       H:{front:"Ever-Walking", back:"Traveler", text:"You know how to fear death properly. Splendid, truly. To fear the end, to wish to linger even a second longer, to hope that as many people as possible remember you — I think that's only natural. It's right. Go on fearing death properly, you hear? That's the secret to a long life."},
+       M:{text:"You fear death, yet you know an end comes for everyone eventually. Why, that's the distance most people keep. Neither fearing it too much nor walking toward it yourself. Isn't that fine? Perhaps you could even overcome the death of someone close. That would undoubtedly be a good thing. People can only move forward, you know. Trite as it is, one mustn't be bound by the past, or by death."},
+       L:{front:"End-Knowing", back:"Hermit", text:"So you're someone who has accepted the end. You don't treat death as an enemy; when the time comes, you'd greet it with arms spread wide. There's nothing more beautiful — and yet it also looks terribly unsteady. Hey, you. Don't come over here yet. If you show up without any stories to tell, I'll be bored."}},
+      {title:"Happiness in the Absurd", plus:"Can find it", minus:"Cannot find it",
+       H:{front:"Joy-Believing", back:"Stone-Stacker", text:"Even if the world is absurd, you can keep smiling within it, I expect. Knowing full well that life doesn't always reward you, you can still be content, rocked by the waves of the days. Perhaps living itself is happiness for you. I'm sure you, of all people, could imagine Sisyphus happy."},
+       M:{text:"You know the world is absurd, yet you don't stop walking. Rather human of you. You can't believe that unrewarded days are happiness, yet you can't stop and abandon hope either. Well, what can I say. I think that's fine, you know. I can't promise you your life will be rewarded, but you're free to hope."},
+       L:{front:"Meaning-Seeking", back:"Pilgrim", text:"You're the type who finds no happiness in meaningless repetition. I imagine you seek a reward beyond the absurd, or at least some reason for it. And I think you're the sort who can easily walk away from anything you've judged wholly meaningless. Isn't that a beautiful way to be."}},
+      {title:"How You Were with Sakura", plus:"Step in", minus:"Watch over",
+       H:{front:"Barging-In", back:"Kind Fool", text:"You're the kind who tramps into other people's worlds with your shoes on. Even when you're turned away, you can't leave well enough alone. A meddlesome, soft-hearted nuisance, true to your own will — that's you. Honestly, you're such a… Really, you… Well, there must be people who are saved by that, too."},
+       M:{text:"You know when to step in and when to step back. The type who's good with people. Or perhaps you simply swing between extremes."},
+       L:{front:"Promise-Keeping", back:"Kind Fool", text:"You respect the other person's will and can sit quietly beside them. Perhaps that's rarer than one would think. But your way of being… at the very least, it saved me."}}
+    ]},
+  ko:{
+    joinName:function(f,b){return [f+" ",b];},
+    fallback:["먹빛 ","벚꽃"], single:"독자",
+    axes:[
+      {title:"생명이 깃드는 곳", plus:"그릇", minus:"정보",
+       H:{front:"벚꽃을 올려다보는", back:"꽃구경꾼", text:"이런 부류의 인간은 생명이란 눈에 보이는 부분에 깃든다고 생각하지. 눈동자에 비치는 세계가 첫째이고, 보이지 않는 세계는 그다음이라는 거라네. 그래서 눈앞의 생명 하나하나를 소중히 다루고, 하나씩 손을 떠날 때마다 상처를 입고 말지. 똑같아 보이는 것으로는 위로받지 못하는, 서투른 인간이로군, 자네는."},
+       M:{text:"생명이 무엇에 깃드는지 정하지 못하고 있군. 혹은 굳이 정할 필요를 느끼지 않는 거겠지. 심장이 멎으면 죽은 자이고, 누구에게서도 잊히면 그것도 죽음이라고 말하지. 자네는 분명 그런 녀석이야. 그러니 분명 누군가 죽으면 슬퍼하고, 누군가를 잊는 일에도 슬퍼하겠지. 자네는."},
+       L:{front:"시든 뒤에 남는", back:"벚꽃 꽃잎", text:"생명은 그릇이 아니라 그 안의 것에 깃든다고 생각하는 인종이로군. 혹은 경험이나 인격이야말로 생명이라고 생각할지도 모르지. 몸이 사라져도 그 온기나 말투, 목소리와 얼굴이 세상에 새겨져 있는 한, 자네에게 죽음은 찾아오지 않아. 뭐, 그건 분명 다정한 생각이라고 나는 생각하네."}},
+      {title:"도피 성향", plus:"도피", minus:"직시",
+       H:{front:"눈을 가린", back:"길 잃은 아이", text:"고통이 따르는 현실보다, 기분 좋은 거짓으로 만든 꿈을 자네는 고르겠지. 그 삶의 방식은 누가 부정하든 뭐니 뭐니 해도 나쁘지 않아. 딱 하나 조심할 게 있다면, 술은 적당히 하고 약에는 손대지 않는 거라네. 이런 부류에게 그건 늪이니까. ……뭐, 그래도 말이지. 나는 꿈을 좋아한다네. 가끔은 함께 술이라도 마시고 싶었는데."},
+       M:{text:"현실을 똑바로 보며 살다가, 필요할 때는 그 눈을 돌린다. 요령이 좋은 건지, 혹은 상처받는 게 두려운 건지. 뭐, 그래도 나쁜 일은 아니야. 애초에 판타지란 한때의 기분 전환일 뿐이니까. 결국 우리는 계속 걸어갈 수밖에 없다네. 눈을 가린 채로는 발밑이 파여도 알아차릴 수 없는 법이지."},
+       L:{front:"상처를 숨기지 않는", back:"증인", text:"아무리 고통이 따르더라도, 결코 현실에서 눈을 돌리지 않는 강한 의지를 지녔군. 꿈을 싫어하고, 도피를 경멸하지. 자네는 그런 인간이로군. 세상의 비바람에 노출되면서도 발밑을 단단히 딛고, 멀고 먼 앞을 내다보는 각오를 가진 드문 인간이야. 훌륭하지. 하지만 말일세, 자네. 가끔은 쉬게나."}},
+      {title:"생명의 저울", plus:"수를 택한다", minus:"죄를 택한다",
+       H:{front:"저울을 치켜든", back:"집행인", text:"저울을 순수한 생명의 수로 보는 거겠지. 혹은 정의가 품은 모순을 삼켰다고도 할 수 있으려나. 단순해 보여도 실은 잔혹한 것이라네. 그래도 사람을 구할 수 있는 인간은 언제나 그런 부류라고 나는 생각하네. 이런 인간은 차가운 게 아니야. 그저 무게를 다는 일에서 도망치지 않을 뿐이지."},
+       M:{text:"책임과 이익 사이에서 흔들리고 있군. 풍향계처럼 보여도, 실은 무엇보다 인간답다고 나는 생각하네. 저울 앞에서 망설일 수 있는 건, 접시 위에 올린 것이 전부가 아님을 알기 때문이지. 극한의 선택을 마주하면 자네는 망설이겠지. 하지만 그걸 부끄러워할 필요는 없어. 그건 무엇보다 아름다운 일이라네."},
+       L:{front:"등을 돌린", back:"기도하는 자", text:"생명을 비교하는 게 싫은 건지, 혹은 책임이라는 걸 짊어지는 게 싫은 거겠지. 그게 무거우면 무거울수록 더더욱. 하지만 알아. 남의 인생을 짊어지고 걸을 수 있을 만큼 사람은 강하게 만들어지지 않았다네. 죽음도, 삶도. 그건 한 사람 한 사람의 것이고, 누군가에게 맡기는 것도, 맡아 주는 것도 아니라네."}},
+      {title:"죽음에 대한 기피", plus:"기피", minus:"수용",
+       H:{front:"계속 걸어가는", back:"나그네", text:"죽음을 올바르게 두려워할 줄 아는군. 참으로 훌륭한 일이야. 끝을 두려워하고, 단 일 초라도 더 살아남기를 바라고, 한 사람이라도 더 기억해 주기를 바란다. 그건 당연한 일이라고 나는 생각하네. 옳은 일이지. 자네, 앞으로도 죽음을 올바르게 두려워하게나. 그게 바로 장수의 비결이라네."},
+       M:{text:"죽음을 두려워하긴 하지만, 언젠가 누구에게나 최후가 온다는 걸 알고 있군. 뭐, 누구나 가진 거리감이지. 지나치게 두려워하지 않고, 스스로 죽음을 향해 걸어가지도 않고. 참 좋은 일 아닌가. 가까운 사람의 죽음도 자네라면 이겨낼 수 있을지도 모르겠군. 그건 틀림없이 좋은 일이야. 사람은 앞으로 나아갈 수밖에 없다네, 자네. 진부하지만, 과거나 죽음에 얽매여선 안 된다는 거지."},
+       L:{front:"최후를 아는", back:"은자", text:"끝을 받아들인 인간이로군, 자네는. 죽음을 적대하지 않고, 언젠가 맞이할 때는 두 팔을 벌려 보일 듯한 인간이야. 그건 무엇보다 아름다운 일이지만, 동시에 몹시 불안정해 보이기도 해. 이봐, 자네. 아직 이쪽으로는 오지 말게. 이야깃거리 하나 없이 오면 심심하니까."}},
+      {title:"부조리 속의 행복", plus:"찾을 수 있다", minus:"찾을 수 없다",
+       H:{front:"행복을 믿는", back:"돌을 쌓는 자", text:"설령 세상이 부조리하더라도, 그 세상 속에서 웃고 있을 수 있겠지. 인생이 반드시 보답받는다고는 할 수 없다는 걸 알면서도, 그래도 나날의 물결에 흔들리며 만족할 수 있다. 사는 것 그 자체가 행복일지도 모르겠군. 분명 자네라면 시시포스를 행복하다고 상상할 수 있겠지."},
+       M:{text:"세상의 부조리를 알면서도 걸음을 멈추지는 않는군. 꽤나 인간적이야. 보답받지 못하는 나날을 행복이라 믿을 수는 없지만, 걸음을 멈추고 희망을 버릴 수도 없다. 뭐, 그러니까 말이지. 나는 그걸로 됐다고 생각하네. 자네의 인생이 보답받을 거라고 약속할 수는 없지만, 희망을 갖는 건 자유라네."},
+       L:{front:"의미를 찾던", back:"순례자", text:"의미 없는 반복에서 행복을 찾지 않는 부류로군. 자네는 분명 부조리를 넘어선 곳에 보답이 있기를, 혹은 부조리에 하다못해 이유라도 있기를 바라겠지. 그리고 완전히 무의미하다고 판단한 일에서는 쉽게 손을 뗄 수 있는 게 자네라고 생각하네. 참으로 아름다운 삶의 방식 아닌가."}},
+      {title:"사쿠라를 대하는 방식", plus:"파고든다", minus:"지켜본다",
+       H:{front:"신발을 신은 채 들어서는", back:"호인", text:"남의 세계에 신발을 신은 채 들어오는 인간이야. 거절을 당해도 내버려 두지 못하지. 자기 의지에 충실한, 오지랖 넓은 골칫덩이가 바로 자네라네. 자네라는 인간은 정말이지. 하여간……. 뭐, 그 덕에 구원받는 인간도 분명 있겠지."},
+       M:{text:"파고들 때와 물러설 때를 아는 인간이로군. 사람 사귀는 데 능한 타입이야. 혹은 그저 양극단일 뿐일지도 모르지만."},
+       L:{front:"약속을 지키는", back:"호인", text:"상대의 뜻을 존중하고, 조용히 곁에 앉아 있을 수 있는 인간이야. 의외로 드문 타입일지도 모르겠군. 하지만 자네의 그런 모습에…… 적어도 나는 구원받았다네."}}
+    ]},
+  zh:{
+    joinName:function(f,b){return [f,b];},
+    fallback:["墨染之","樱"], single:"读者",
+    axes:[
+      {title:"生命之所在", plus:"容器", minus:"信息",
+       H:{front:"仰望樱花的", back:"赏花客", text:"这类人认为，生命栖息于看得见的部分。映在眼中的世界才是第一位，看不见的世界则屈居其次。所以，你会珍视眼前的每一条生命，每当有一条从手中离去，便会受伤。无法被看似相同的东西所慰藉——你就是这样笨拙的人啊。"},
+       M:{text:"你还没决定生命栖息于何处。又或许，你根本不觉得有必要特意去决定。心脏停止便是死者，被所有人遗忘也算是死。你一定就是这样的人。正因如此，你大概会为某人的死而悲伤，也会为遗忘某人而悲伤吧。你啊。"},
+       L:{front:"凋零后留存的", back:"樱花花瓣", text:"你是那种认为生命不栖息于容器、而栖息于其内在的人吧。又或许你会认为，经历与人格才是生命本身。即便身体消失，只要那份温度、那种说话方式、那声音与面容仍铭刻在世间，对你而言，死亡便不会到来。嘛，我想那一定是温柔的想法吧。"}},
+      {title:"逃避倾向", plus:"逃避", minus:"直视",
+       H:{front:"蒙住双眼的", back:"迷途之子", text:"比起伴随痛苦的现实，你会选择由舒适谎言织成的梦吧。那样的活法，无论谁来否定，说到底也不坏。若说有什么要注意的，那就是酒要适量，药千万别碰。对这类人而言，那是泥沼。……嘛，不过啊。我是喜欢梦的。真想偶尔和你一起喝上一杯呢。"},
+       M:{text:"你直视着现实活着，在必要时移开视线。是灵巧呢，还是害怕受伤呢。嘛，那也不是坏事。说到底，奇幻不过是一时的消遣罢了。归根结底，我们只能继续走下去。蒙着眼睛的话，脚下被掏空也察觉不到的。"},
+       L:{front:"不掩伤痕的", back:"见证者", text:"无论伴随着多少痛苦，你都有着绝不从现实移开视线的坚强意志。厌恶梦境，唾弃逃避。你就是这样的人吧。即便暴露在世间的风雨之中，依然站稳脚跟、眺望遥远的前方——你是怀有这般觉悟的稀有之人。了不起啊。但是啊，你。偶尔也休息一下吧。"}},
+      {title:"生命的天平", plus:"取其数", minus:"取其罪",
+       H:{front:"高举天平的", back:"执行者", text:"你是以纯粹的生命数量来看待天平的吧。又或者可以说，你吞下了正义所孕育的矛盾。看似简单，实则残酷。即便如此，我认为能够拯救他人的，永远都是这类人。这样的人并不冷漠，只是不逃避称量重量这件事罢了。"},
+       M:{text:"你在责任与利益之间摇摆。看似墙头草，其实我觉得这比什么都更像人。之所以能在天平前犹豫，是因为你知道放在秤盘上的并非全部。当被迫做出极限抉择时，你会犹豫吧。但不必为此感到羞耻。那比什么都要美丽。"},
+       L:{front:"转身背对的", back:"祈祷者", text:"你是讨厌比较生命，还是讨厌背负所谓的责任呢。它越沉重，就越是如此。不过，我懂的。人可没有坚强到能背负他人的人生前行。死也好，生也罢，那都是每个人自己的东西，既不该托付给谁，也不该替谁承担。"}},
+      {title:"对死亡的忌避", plus:"忌避", minus:"接受",
+       H:{front:"不停前行的", back:"旅人", text:"你能正确地畏惧死亡。实在是了不起。畏惧终结，渴望哪怕多活一秒，希望被尽可能多的人记住。我认为这是理所当然的事。是正确的。你啊，今后也要好好地畏惧死亡。这才是长寿的秘诀。"},
+       M:{text:"你畏惧死亡，却也知道终有一天谁都会迎来终点。嘛，这是谁都有的距离感。既不过分畏惧，也不主动走向死亡。这不是很好吗。即便是亲近之人的死，换作是你，或许也能跨越吧。那无疑是好事。人只能向前走啊，你。虽然老套，但不能被过去和死亡束缚。"},
+       L:{front:"知晓终末的", back:"隐者", text:"你是接受了终结的人啊。不把死亡视为敌人，当那一刻来临时，大概会张开双臂迎接吧。那比什么都美丽，同时也显得极为不安定。喂，你。还不许到这边来。连点见闻都不带就过来的话，我会无聊的。"}},
+      {title:"荒诞中的幸福", plus:"能找到", minus:"找不到",
+       H:{front:"相信幸福的", back:"垒石人", text:"即便世界荒诞，你也能在其中笑着活下去吧。明知人生未必会有回报，依然能在日子的波浪中摇荡并感到满足。或许活着本身对你来说就是幸福。想必你一定能想象西西弗斯是幸福的。"},
+       M:{text:"明知世界荒诞，你却不曾停下脚步。真是相当有人情味啊。无法相信没有回报的日子是幸福，却也无法停下脚步、舍弃希望。嘛，怎么说呢。我觉得这样就好。我无法向你保证你的人生会有回报，但怀抱希望是你的自由。"},
+       L:{front:"追寻意义的", back:"巡礼者", text:"你是那种无法在无意义的重复中找到幸福的人。你大概会追求越过荒诞之后的回报，或者至少为荒诞寻一个理由吧。而且，我想你是那种一旦判定某事毫无意义，便能轻易抽身的人。这不是很美丽的活法吗。"}},
+      {title:"与咲乐相处的方式", plus:"踏入", minus:"守望",
+       H:{front:"擅自闯入的", back:"老好人", text:"你是会穿着鞋闯进别人世界的人。即便被拒绝，也无法放着不管。忠于自己意志、又爱多管闲事的麻烦精，就是你。你这个人真是……实在是……。嘛，大概也一定有人因此得救吧。"},
+       M:{text:"你知道何时该踏入，何时该退开。是擅长与人相处的类型吧。又或者，你只是走两个极端罢了。"},
+       L:{front:"信守约定的", back:"老好人", text:"你尊重对方的意志，能静静地坐在身旁。说不定意外地是很少见的类型呢。不过，你的这种样子……至少，我曾被它拯救。"}}
+    ]}
+  };
+
+  /* ================================================================
+     歌詞(表示用)。ja は原詞(HTML可: ルビ)、他は訳
+     ================================================================ */
+  var U = '<ruby>詩<rt>うた</rt></ruby>';
+  var LYRICS = [
+    {ja:["春だというのに 蝉が鳴いていた","誰も知らない 季節の隅で","七つを数えた 指の先から","風に吹かれて 花びらが散る"],
+     en:["Though it was spring, a cicada was singing","in a corner of the season no one knew","from the fingertips that counted to seven","petals scatter, carried off by the wind"],
+     ko:["봄인데도 매미가 울고 있었다","아무도 모르는 계절의 구석에서","일곱을 헤아린 손끝에서","바람에 날려 꽃잎이 흩어진다"],
+     zh:["明明是春天 却有蝉在鸣叫","在无人知晓的 季节的角落","从数到七的 指尖之间","随风吹拂 花瓣飘散"]},
+    {ja:["カーテンを閉め切った昼下がり","インクの匂いと 散らかった嘘","ぶっきらぼうな呼び声ひとつ","いつでもぼくは それだけでよかった"],
+     en:["An early afternoon behind drawn curtains","the smell of ink, and lies strewn all about","a single gruff call","was always all I ever needed"],
+     ko:["커튼을 꼭 닫은 한낮","잉크 냄새와 흩어진 거짓말","퉁명스러운 부름 하나","언제나 나는 그것만으로 좋았어"],
+     zh:["窗帘紧闭的午后","墨水的气味与散落的谎言","一声粗鲁的呼唤","我总是 只要那样就够了"]},
+    {ja:["泣き方なんて とうに忘れた","忘れてたんだよ、本当はさ。"],
+     en:["How to cry — I forgot that long ago","I really had forgotten, you know."],
+     ko:["우는 법 따위 진작에 잊었어","잊고 있었던 거야, 정말로."],
+     zh:["哭泣的方式 早已忘记","我是真的忘了啊。"]},
+    {ja:["啼いて 啼いて 季節外れの蝉","誰にも届かない 声でいい","ピリオドを打つまで この"+U+"は届かないけど","それでも良いさ 短い命","誰かの為に 蝉は啼く"],
+     en:["Cry, cry, you cicada out of season","a voice that reaches no one is enough","until I set down the final period, this song won't reach you, but","that's fine — a short life","for someone's sake, the cicada cries"],
+     ko:["울어라 울어라 철 지난 매미","누구에게도 닿지 않는 목소리면 돼","마침표를 찍을 때까지 이 노래는 닿지 않겠지만","그래도 괜찮아 짧은 목숨","누군가를 위해 매미는 운다"],
+     zh:["啼鸣吧 啼鸣吧 不合时节的蝉","传达不到任何人的声音也好","在画上句点之前 这首歌无法传达","但那也无妨 短暂的生命","为了某个人 蝉在啼鸣"]},
+    {ja:["レバーを引くか 夢に溺れるか","下らない問いだと ぼくは嗤った","インクが滲んだ 手帳のページ","けして強がり なんかじゃなかった"],
+     en:["Pull the lever, or drown in a dream","I laughed them off as foolish questions","a page of my notebook, the ink all blurred","it was never just a brave face"],
+     ko:["레버를 당길까 꿈에 빠질까","시시한 질문이라고 나는 비웃었다","잉크가 번진 수첩의 한 페이지","결코 허세 같은 게 아니었어"],
+     zh:["是拉下拉杆 还是沉溺于梦","我嗤笑那是无聊的问题","墨水晕开的 手帐的一页","那绝不是 什么逞强"]},
+    {ja:["一本の桜が 枯れて朽ちても","世界のどこかで 花が開いた","短い命だ 桜も蝉も","それでも ぼくらは 啼いている"],
+     en:["Even if one cherry tree withers and rots","somewhere in the world, a blossom opened","short lives, the sakura and the cicada both","and still, we go on crying"],
+     ko:["벚나무 한 그루가 시들어 썩어도","세상 어딘가에서 꽃이 피었다","짧은 목숨이야 벚꽃도 매미도","그래도 우리는 울고 있다"],
+     zh:["即便一棵樱树 枯萎腐朽","世界的某处 仍有花朵绽放","短暂的生命啊 樱花与蝉都是","即便如此 我们仍在啼鸣"]},
+    {ja:["石を積んでは 崩れる日々を","うつくしいと 信じていたんだ"],
+     en:["Days of stacking stones only to watch them fall —","I believed they were beautiful"],
+     ko:["돌을 쌓아서는 무너지는 나날을","아름답다고 믿고 있었어"],
+     zh:["将石头堆起 又崩塌的日子","我曾相信 那是美丽的"]},
+    {ja:["啼いて 啼いて 季節外れの蝉","七日で終わる 歌でいい","振り返った時に 残ったものを抱えて","そいつをぼくは 意味と呼ぼう","軌跡の為に 蝉は啼く"],
+     en:["Cry, cry, you cicada out of season","a song that ends in seven days is enough","holding on to what remains when I look back","that is what I'll call meaning","for the trail it leaves, the cicada cries"],
+     ko:["울어라 울어라 철 지난 매미","이레면 끝나는 노래면 돼","돌아보았을 때 남은 것을 끌어안고","그걸 나는 의미라고 부르자","지나온 자취를 위해 매미는 운다"],
+     zh:["啼鸣吧 啼鸣吧 不合时节的蝉","七天就结束的歌也好","回首之时 抱着留下的东西","我要将它 称之为意义","为了走过的轨迹 蝉在啼鸣"]},
+    {quiet:true,
+     ja:["最後の頁を書いている時","ふと思ったんだ。","この物語を読む時","ぼくはそこに居ないんだなって","それが少しだけ","ほんの少しだけ　惜しく思っただけなんだよ"],
+     en:["While I was writing the final page","it suddenly struck me.","When this story is read","I won't be there anymore","and just a little —","only a little — I thought it a shame, that's all"],
+     ko:["마지막 페이지를 쓰고 있을 때","문득 생각했어.","이 이야기를 읽을 때","나는 거기 없겠구나 하고","그게 조금은","아주 조금은 아쉬웠을 뿐이야"],
+     zh:["在写最后一页的时候","我忽然想到。","当这个故事被读起时","我已经不在那里了","只是有那么一点","只有那么一点点 觉得可惜罢了"]},
+    {ja:["あしたは来なくて良い なんて","言わなきゃよかった なんて","本当は怖かった だなんて","一人で死にたくないだなんて"],
+     en:["\"You needn't come tomorrow\" —","that I wish I'd never said it —","that I was scared, really —","that I don't want to die alone —"],
+     ko:["내일은 안 와도 돼 같은 말","하지 말걸 그랬다고","사실은 무서웠다고","혼자 죽고 싶지 않다고"],
+     zh:["说什么明天不用来了","要是没说就好了","其实我好害怕","我不想一个人死去"]},
+    {quiet:true,
+     ja:["なんてね　こんなの　らしくないだろう？"],
+     en:["…Just kidding. That's not like me, is it?"],
+     ko:["……농담이야. 이런 거, 나답지 않지?"],
+     zh:["……开玩笑的。这种话，不像我吧？"]},
+    {ja:["啼いて 泣いて 花弁と共に落ちた","最期を飾る "+U+"で良いから","伝えられなかった 言葉を"+U+"に変えてさ","らしくないとか 笑ってくれよ","君の為に 啼いたんだから"],
+     en:["Crying, weeping, I fell along with the petals","a song to adorn the end is enough","the words I never told you, I turned into a song","go on, laugh and say it's not like me","I cried for you, after all"],
+     ko:["울어라 흐느껴라 꽃잎과 함께 떨어졌다","마지막을 장식할 노래면 되니까","전하지 못했던 말을 노래로 바꿔서","나답지 않다고 웃어 줘","너를 위해 울었으니까"],
+     zh:["啼鸣吧 哭泣吧 随花瓣一同坠落","只要是装点最后的歌就好","把没能说出口的话 化作歌","就笑我说不像我吧","因为我是为你而啼"]},
+    {last:true,
+     ja:["ああ。まあ、悪くはなかった。"],
+     en:["Ah. Well — it wasn't so bad."],
+     ko:["아아. 뭐, 나쁘지는 않았어."],
+     zh:["啊。嘛，还不坏。"]}
+  ];
+
+  /* ================================================================
+     状態
+     ================================================================ */
+  var lang = "ja", lastVals = null, lastText = "";
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  function detectLang(){
+    var q = (location.search.match(/[?&]lang=(ja|en|ko|zh)/)||[])[1];
+    if(q) return q;
+    try{ var s = localStorage.getItem("cc-lang"); if(s && UI[s]) return s; }catch(e){}
+    var n = (navigator.language||"ja").toLowerCase();
+    if(n.indexOf("ja")===0) return "ja";
+    if(n.indexOf("ko")===0) return "ko";
+    if(n.indexOf("zh")===0) return "zh";
+    return "en";
+  }
+
+  function applyLang(l){
+    lang = l; var u = UI[l];
+    document.documentElement.lang = u.htmlLang;
+    document.title = u.titleText;
+    var html = {title:1, lead2:1};
+    Array.prototype.forEach.call(document.querySelectorAll("[data-t]"), function(n){
+      var k = n.getAttribute("data-t");
+      if(html[k]) n.innerHTML = u[k]; else n.textContent = u[k];
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("#langs button"), function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang")===l ? "true":"false");
+    });
+    try{ localStorage.setItem("cc-lang", l); }catch(e){}
+    syncBgmLabels();
+    renderLyrics();
+    if(lastVals) render(judge(lastVals), false);
+    var err = $("err"); if(err.getAttribute("data-k")) err.textContent = u[err.getAttribute("data-k")];
+  }
+
+  /* ---- 読み取り ---- */
+  function normalize(s){
+    return s.replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0xFEE0)})
+            .replace(/[−－‐‑–—]/g,"-").replace(/＋/g,"+");
+  }
+  function parse(text){
+    var t = normalize(text), vals = {}, found = 0, re = /([αβγδεζ])\s*[:：=]?\s*([+-]?\s*\d+)/g, m;
+    while((m = re.exec(t))){ vals[m[1]] = parseInt(m[2].replace(/\s/g,""),10); found++; }
+    return {vals:vals, found:found};
+  }
+
+  /* ---- 判定 ---- */
+  function judge(vals){
+    var rows = AXES.map(function(ax, i){
+      var v = vals[ax.sym] || 0;
+      var lv = v >= ax.hi ? "H" : (v <= ax.lo ? "L" : "M");
+      var strength = v > 0 ? Math.min(v/ax.maxP,1) : (v < 0 ? Math.min(-v/ax.maxM,1) : 0);
+      return {i:i, ax:ax, v:v, lv:lv, strength:strength};
+    });
+    // 型の名前は「高」か「低」になった軸から、振れ幅の割合が大きい順に二つ取る
+    var named = rows.filter(function(r){return r.lv !== "M";})
+                    .sort(function(a,b){return (b.strength - a.strength) || (a.i - b.i);});
+    return {rows:rows, a:named[0]||null, b:named[1]||null};
+  }
+
+  /* ---- 表示 ---- */
+  function typeParts(res){
+    var T = TXT[lang];
+    if(res.a && res.b) return T.joinName(T.axes[res.a.i][res.a.lv].front, T.axes[res.b.i][res.b.lv].back);
+    if(res.a) return T.joinName(T.axes[res.a.i][res.a.lv].front, T.single);
+    return T.fallback;
+  }
+  function render(res, scroll){
+    var u = UI[lang], T = TXT[lang];
+    var parts = typeParts(res), nameEl = $("type-name"); nameEl.textContent = "";
+    nameEl.appendChild(el("span","front",parts[0])); nameEl.appendChild(el("span","back",parts[1]));
+    var from = [];
+    if(res.a) from.push(T.axes[res.a.i].title + "：" + u.levels[res.a.lv]);
+    if(res.b) from.push(T.axes[res.b.i].title + "：" + u.levels[res.b.lv]);
+    $("type-from").textContent = from.length ? from.join(u.sep) : u.none;
+
+    var box = $("axes"); box.textContent = "";
+    res.rows.forEach(function(r){
+      var a = r.ax, t = T.axes[r.i], wrap = el("div","axis");
+      var head = el("div","axis-head");
+      var tt = el("div","axis-title"); tt.appendChild(el("span","sym",a.sym)); tt.appendChild(document.createTextNode(t.title));
+      head.appendChild(tt); head.appendChild(el("div","axis-level",u.levels[r.lv]));
+      wrap.appendChild(head);
+      var g = el("div","gauge"), ends = el("div","ends");
+      ends.appendChild(el("span",null,t.minus)); ends.appendChild(el("span",null,t.plus));
+      var bar = el("div","bar"); bar.appendChild(el("div","mid"));
+      var dot = el("div","dot");
+      var pos = r.v >= 0 ? 50 + 50*Math.min(r.v/a.maxP,1) : 50 - 50*Math.min(-r.v/a.maxM,1);
+      dot.style.left = scroll ? "50%" : pos + "%"; bar.appendChild(dot);
+      g.appendChild(ends); g.appendChild(bar); wrap.appendChild(g);
+      if(scroll) requestAnimationFrame(function(){ requestAnimationFrame(function(){ dot.style.left = pos + "%"; }); });
+      var d = t[r.lv];
+      if(d.front) wrap.appendChild(el("div","alias","（" + d.front + "／" + d.back + "）"));
+      wrap.appendChild(el("p",null,d.text));
+      box.appendChild(wrap);
+    });
+    var sec = $("result"); sec.hidden = false;
+    if(scroll) sec.scrollIntoView({behavior:"smooth", block:"start"});
+
+    var lines = [u.copyHead, u.copyYou(parts.join("").trim())];
+    res.rows.forEach(function(r){ lines.push(r.ax.sym + " " + T.axes[r.i].title + "：" + u.levels[r.lv]); });
+    lines.push("#君と啼く蝉");
+    lastText = lines.join("\n");
+  }
+
+  function run(text){
+    var err = $("err"); err.textContent = ""; err.removeAttribute("data-k");
+    var p = parse(text || "");
+    if(!p.found){ err.setAttribute("data-k","errNone"); err.textContent = UI[lang].errNone; return; }
+    if(p.found < 6){ err.setAttribute("data-k","errPart"); err.textContent = UI[lang].errPart; }
+    lastVals = p.vals;
+    render(judge(p.vals), true);
+  }
+
+  /* ---- 歌詞 ---- */
+  function renderLyrics(){
+    var box = $("lyrics-body"); box.innerHTML = "";
+    LYRICS.forEach(function(s){
+      var st = el("div","stanza" + (s.quiet?" quiet":"") + (s.last?" last":""));
+      var ja = el("div","ja"); ja.innerHTML = s.ja.join("<br>"); st.appendChild(ja);
+      if(lang !== "ja"){ var tr = el("div","tr"); tr.textContent = ""; s[lang].forEach(function(line,i){ if(i) tr.appendChild(document.createElement("br")); tr.appendChild(document.createTextNode(line)); }); st.appendChild(tr); }
+      box.appendChild(st);
+    });
+  }
+
+  /* ---- タブ ---- */
+  function showTab(which){
+    var book = which === "book";
+    $("tab-book").setAttribute("aria-selected", book ? "true":"false");
+    $("tab-lyrics").setAttribute("aria-selected", book ? "false":"true");
+    $("panel-book").hidden = !book; $("panel-lyrics").hidden = book;
+  }
+  $("tab-book").addEventListener("click", function(){ showTab("book"); });
+  $("tab-lyrics").addEventListener("click", function(){ showTab("lyrics"); });
+
+  /* ---- 操作 ---- */
+  $("go").addEventListener("click", function(){ run($("code").value); });
+  $("code").addEventListener("keydown", function(e){ if(e.key === "Enter" && (e.ctrlKey || e.metaKey)) run(this.value); });
+  Array.prototype.forEach.call(document.querySelectorAll("#langs button"), function(b){
+    b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang")); });
+  });
+  $("copy").addEventListener("click", function(){
+    var btn = this;
+    function done(){ btn.textContent = UI[lang].copied; setTimeout(function(){ btn.textContent = UI[lang].copy; }, 1600); }
+    function fallback(){
+      var ta = document.createElement("textarea"); ta.value = lastText; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); done(); }catch(e){} document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(lastText).then(done, fallback); } else { fallback(); }
+  });
+
+  /* ---- BGM(bgm.mp3 が置いてある時だけ表示) ---- */
+  var au = $("bgm"), ui = $("bgm-ui"), btn = $("bgm-btn"), vol = $("bgm-vol"), lyrBtn = $("lyr-btn");
+  function syncBgmLabels(){
+    var t = au.paused ? UI[lang].play : UI[lang].stop;
+    btn.textContent = t; lyrBtn.textContent = t;
+    btn.setAttribute("aria-pressed", au.paused ? "false":"true");
+  }
+  try{ var sv = localStorage.getItem("cc-vol"); if(sv !== null) vol.value = sv; }catch(e){}
+  au.volume = vol.value/100;
+  au.addEventListener("loadedmetadata", function(){ ui.hidden = false; $("lyr-play").hidden = false; });
+  au.addEventListener("error", function(){ ui.hidden = true; $("lyr-play").hidden = true; });
+  function toggle(){ if(au.paused){ au.play().catch(function(){}); } else { au.pause(); } }
+  btn.addEventListener("click", toggle); lyrBtn.addEventListener("click", toggle);
+  ["play","pause","ended"].forEach(function(ev){ au.addEventListener(ev, syncBgmLabels); });
+  vol.addEventListener("input", function(){ au.volume = vol.value/100; try{ localStorage.setItem("cc-vol", vol.value); }catch(e){} });
+
+  /* ---- 開始 ---- */
+  applyLang(detectLang());
+  if(location.hash.length > 1){
+    var h = decodeURIComponent(location.hash.slice(1));
+    $("code").value = h; run(h);
+  }
+})();
+</script>
+</body>
+</html>
